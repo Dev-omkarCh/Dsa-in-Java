@@ -1,8 +1,4 @@
 package HeightOfTree;
-
-import java.util.LinkedList;
-import java.util.Queue;
-
 class Node{
     Node left;
     Node right;
@@ -33,54 +29,49 @@ class Build{
 
 public class Solution {
 
-    // levelOrder Vise
-    public static int heightOfTreeByMe(Node root){
-        Queue<Node> queue = new LinkedList<>();
-        int height = 1;
-        queue.add(root);
-        queue.add(null);
-        while (!queue.isEmpty()) {
-            Node curNode = queue.remove();
-            if(curNode == null){
-                if(queue.isEmpty()){
-                    return height;
-                }
-                else{
-                    queue.add(null);
-                    height++;
-                }
-            }
-            else{
-                if(curNode.left != null) queue.add(curNode.left);
-                if(curNode.right != null) queue.add(curNode.right);
-            }
-        }
-        return height;
-    }
-
-    // Recursively O(n)
     public static int heightOfTree(Node root){
         if(root == null){
             return 0;
         }
-        int leftHeight = heightOfTree(root.left);
-        int rightHeight = heightOfTree(root.right);
-        int height = Math.max(leftHeight, rightHeight) + 1;
-        return height;
+        int left = heightOfTree(root.left);
+        int right = heightOfTree(root.right);
+        return Math.max(left, right) + 1;
     }
 
-    /*
-            1
-           / \
-          2   3
-         / \   \
-        4  5    6
-    */
+    public static int countOfNodes(Node root){
+        if(root == null){
+            return 0;
+        }
+        int left = countOfNodes(root.left);
+        int right = countOfNodes(root.right);
+        return left + right + 1;
+    }
+
+    public static int sumOfNodes(Node root){
+        if(root == null){
+            return 0;
+        }
+        int left = sumOfNodes(root.left);
+        int right = sumOfNodes(root.right);
+        return left + right + root.data;
+    }
+
+    public static int  diameterOfTree(Node root){
+        if(root == null){
+            return 0;
+        }
+        int daim1 = diameterOfTree(root.left);
+        int daim2 = diameterOfTree(root.right);
+        int daim3 = heightOfTree(root.left) + heightOfTree(root.right) + 1;
+        int daimeter = Math.max(Math.max(daim1, daim2), daim3);
+        return daimeter;
+    }
+
 
     public static void main(String[] args) {
         int[] nodes = {1,2,4,-1,-1,5,-1,-1,3,-1,6,-1,-1};
         Build tree = new Build();
         Node root = tree.build(nodes);
-        System.out.println(heightOfTree(root));
+        System.out.println(diameterOfTree(root));
     }
 }
